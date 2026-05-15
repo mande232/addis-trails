@@ -9,38 +9,127 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as TripsRouteImport } from './routes/trips'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as ScoutRouteImport } from './routes/scout'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as PlacesPlaceIdRouteImport } from './routes/places.$placeId'
+import { Route as PlacesPlaceIdNavigateRouteImport } from './routes/places.$placeId.navigate'
 
+const TripsRoute = TripsRouteImport.update({
+  id: '/trips',
+  path: '/trips',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ScoutRoute = ScoutRouteImport.update({
+  id: '/scout',
+  path: '/scout',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PlacesPlaceIdRoute = PlacesPlaceIdRouteImport.update({
+  id: '/places/$placeId',
+  path: '/places/$placeId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PlacesPlaceIdNavigateRoute = PlacesPlaceIdNavigateRouteImport.update({
+  id: '/navigate',
+  path: '/navigate',
+  getParentRoute: () => PlacesPlaceIdRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/scout': typeof ScoutRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/trips': typeof TripsRoute
+  '/places/$placeId': typeof PlacesPlaceIdRouteWithChildren
+  '/places/$placeId/navigate': typeof PlacesPlaceIdNavigateRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/scout': typeof ScoutRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/trips': typeof TripsRoute
+  '/places/$placeId': typeof PlacesPlaceIdRouteWithChildren
+  '/places/$placeId/navigate': typeof PlacesPlaceIdNavigateRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/scout': typeof ScoutRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/trips': typeof TripsRoute
+  '/places/$placeId': typeof PlacesPlaceIdRouteWithChildren
+  '/places/$placeId/navigate': typeof PlacesPlaceIdNavigateRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/scout'
+    | '/sitemap.xml'
+    | '/trips'
+    | '/places/$placeId'
+    | '/places/$placeId/navigate'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/scout'
+    | '/sitemap.xml'
+    | '/trips'
+    | '/places/$placeId'
+    | '/places/$placeId/navigate'
+  id:
+    | '__root__'
+    | '/'
+    | '/scout'
+    | '/sitemap.xml'
+    | '/trips'
+    | '/places/$placeId'
+    | '/places/$placeId/navigate'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ScoutRoute: typeof ScoutRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  TripsRoute: typeof TripsRoute
+  PlacesPlaceIdRoute: typeof PlacesPlaceIdRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/trips': {
+      id: '/trips'
+      path: '/trips'
+      fullPath: '/trips'
+      preLoaderRoute: typeof TripsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/scout': {
+      id: '/scout'
+      path: '/scout'
+      fullPath: '/scout'
+      preLoaderRoute: typeof ScoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,11 +137,41 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/places/$placeId': {
+      id: '/places/$placeId'
+      path: '/places/$placeId'
+      fullPath: '/places/$placeId'
+      preLoaderRoute: typeof PlacesPlaceIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/places/$placeId/navigate': {
+      id: '/places/$placeId/navigate'
+      path: '/navigate'
+      fullPath: '/places/$placeId/navigate'
+      preLoaderRoute: typeof PlacesPlaceIdNavigateRouteImport
+      parentRoute: typeof PlacesPlaceIdRoute
+    }
   }
 }
 
+interface PlacesPlaceIdRouteChildren {
+  PlacesPlaceIdNavigateRoute: typeof PlacesPlaceIdNavigateRoute
+}
+
+const PlacesPlaceIdRouteChildren: PlacesPlaceIdRouteChildren = {
+  PlacesPlaceIdNavigateRoute: PlacesPlaceIdNavigateRoute,
+}
+
+const PlacesPlaceIdRouteWithChildren = PlacesPlaceIdRoute._addFileChildren(
+  PlacesPlaceIdRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ScoutRoute: ScoutRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
+  TripsRoute: TripsRoute,
+  PlacesPlaceIdRoute: PlacesPlaceIdRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

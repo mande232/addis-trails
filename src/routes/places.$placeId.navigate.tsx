@@ -1,9 +1,9 @@
 import { createFileRoute, Link, notFound, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { getPlaceById } from "@/data/mockData";
+import { getPlaceById, type Place } from "@/data/mockData";
 
 export const Route = createFileRoute("/places/$placeId/navigate")({
-  loader: ({ params }) => {
+  loader: ({ params }): { place: Place } => {
     const place = getPlaceById(params.placeId);
     if (!place) throw notFound();
     return { place };
