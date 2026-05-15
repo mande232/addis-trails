@@ -20,7 +20,7 @@ export const Route = createFileRoute("/places/$placeId/navigate")({
 });
 
 function NavigatePage() {
-  const { place } = Route.useLoaderData();
+  const { place } = Route.useLoaderData() as { place: Place };
   const navigate = useNavigate();
   const [step, setStep] = useState(0);
   const total = place.checkpoints.length;

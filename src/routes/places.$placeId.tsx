@@ -42,7 +42,7 @@ export const Route = createFileRoute("/places/$placeId")({
 });
 
 function PlacePage() {
-  const { place } = Route.useLoaderData();
+  const { place } = Route.useLoaderData() as { place: Place };
   const [activeImg, setActiveImg] = useState(0);
   const hood = neighborhoods.find((n) => n.id === place.neighborhoodId);
 
