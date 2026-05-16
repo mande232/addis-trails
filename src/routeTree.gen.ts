@@ -11,7 +11,11 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TripsRouteImport } from './routes/trips'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as ScoutRouteImport } from './routes/scout'
+import { Route as ProfileRouteImport } from './routes/profile'
+import { Route as MapRouteImport } from './routes/map'
+import { Route as ListPlaceRouteImport } from './routes/list-place'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as PlacesPlaceIdRouteImport } from './routes/places.$placeId'
 import { Route as PlacesPlaceIdNavigateRouteImport } from './routes/places.$placeId.navigate'
@@ -26,9 +30,29 @@ const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SettingsRoute = SettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ScoutRoute = ScoutRouteImport.update({
   id: '/scout',
   path: '/scout',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfileRoute = ProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MapRoute = MapRouteImport.update({
+  id: '/map',
+  path: '/map',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ListPlaceRoute = ListPlaceRouteImport.update({
+  id: '/list-place',
+  path: '/list-place',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -49,7 +73,11 @@ const PlacesPlaceIdNavigateRoute = PlacesPlaceIdNavigateRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/list-place': typeof ListPlaceRoute
+  '/map': typeof MapRoute
+  '/profile': typeof ProfileRoute
   '/scout': typeof ScoutRoute
+  '/settings': typeof SettingsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/trips': typeof TripsRoute
   '/places/$placeId': typeof PlacesPlaceIdRouteWithChildren
@@ -57,7 +85,11 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/list-place': typeof ListPlaceRoute
+  '/map': typeof MapRoute
+  '/profile': typeof ProfileRoute
   '/scout': typeof ScoutRoute
+  '/settings': typeof SettingsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/trips': typeof TripsRoute
   '/places/$placeId': typeof PlacesPlaceIdRouteWithChildren
@@ -66,7 +98,11 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/list-place': typeof ListPlaceRoute
+  '/map': typeof MapRoute
+  '/profile': typeof ProfileRoute
   '/scout': typeof ScoutRoute
+  '/settings': typeof SettingsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/trips': typeof TripsRoute
   '/places/$placeId': typeof PlacesPlaceIdRouteWithChildren
@@ -76,7 +112,11 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/list-place'
+    | '/map'
+    | '/profile'
     | '/scout'
+    | '/settings'
     | '/sitemap.xml'
     | '/trips'
     | '/places/$placeId'
@@ -84,7 +124,11 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/list-place'
+    | '/map'
+    | '/profile'
     | '/scout'
+    | '/settings'
     | '/sitemap.xml'
     | '/trips'
     | '/places/$placeId'
@@ -92,7 +136,11 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/list-place'
+    | '/map'
+    | '/profile'
     | '/scout'
+    | '/settings'
     | '/sitemap.xml'
     | '/trips'
     | '/places/$placeId'
@@ -101,7 +149,11 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ListPlaceRoute: typeof ListPlaceRoute
+  MapRoute: typeof MapRoute
+  ProfileRoute: typeof ProfileRoute
   ScoutRoute: typeof ScoutRoute
+  SettingsRoute: typeof SettingsRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TripsRoute: typeof TripsRoute
   PlacesPlaceIdRoute: typeof PlacesPlaceIdRouteWithChildren
@@ -123,11 +175,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/scout': {
       id: '/scout'
       path: '/scout'
       fullPath: '/scout'
       preLoaderRoute: typeof ScoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/map': {
+      id: '/map'
+      path: '/map'
+      fullPath: '/map'
+      preLoaderRoute: typeof MapRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/list-place': {
+      id: '/list-place'
+      path: '/list-place'
+      fullPath: '/list-place'
+      preLoaderRoute: typeof ListPlaceRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -168,7 +248,11 @@ const PlacesPlaceIdRouteWithChildren = PlacesPlaceIdRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ListPlaceRoute: ListPlaceRoute,
+  MapRoute: MapRoute,
+  ProfileRoute: ProfileRoute,
   ScoutRoute: ScoutRoute,
+  SettingsRoute: SettingsRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TripsRoute: TripsRoute,
   PlacesPlaceIdRoute: PlacesPlaceIdRouteWithChildren,
@@ -176,13 +260,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
