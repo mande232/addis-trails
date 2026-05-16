@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 
-const links = [
+const links: { to: "/" | "/map" | "/trips" | "/scout" | "/list-place" | "/profile" | "/settings"; label: string; exact?: boolean }[] = [
   { to: "/", label: "Discover", exact: true },
   { to: "/map", label: "Map" },
   { to: "/trips", label: "Itinerary" },
@@ -8,7 +8,7 @@ const links = [
   { to: "/list-place", label: "List" },
   { to: "/profile", label: "Profile" },
   { to: "/settings", label: "Settings" },
-] as const;
+];
 
 export function Header() {
   return (
