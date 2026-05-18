@@ -3,7 +3,7 @@ import { useState } from "react";
 import { getPlaceById, type Place } from "@/data/mockData";
 import { vibeMap } from "@/data/vibe";
 
-export const Route = createFileRoute("/places/$placeId/navigate")({
+export const Route = createFileRoute("/places/$placeId_/navigate")({
   loader: ({ params }): { place: Place } => {
     const place = getPlaceById(params.placeId);
     if (!place) throw notFound();

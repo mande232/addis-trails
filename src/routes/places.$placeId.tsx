@@ -101,7 +101,7 @@ function PlacePage() {
           </div>
           <div className="flex flex-col gap-3 min-w-[220px]">
             <Link
-              to="/places/$placeId/navigate"
+              to="/places/$placeId_/navigate"
               params={{ placeId: place.id }}
               className="bg-primary text-primary-foreground px-6 py-4 text-xs font-bold uppercase tracking-[0.25em] hover:bg-foreground transition-colors text-center"
             >

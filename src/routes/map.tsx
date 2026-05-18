@@ -126,7 +126,7 @@ function MapView() {
                     Details
                   </Link>
                   <Link
-                    to="/places/$placeId/navigate"
+                    to="/places/$placeId_/navigate"
                     params={{ placeId: selected.id }}
                     className="text-[10px] font-bold uppercase tracking-[0.25em] border border-border px-4 py-2.5 hover:border-primary hover:text-primary transition-colors text-center"
                   >
