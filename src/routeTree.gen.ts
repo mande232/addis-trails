@@ -18,7 +18,7 @@ import { Route as MapRouteImport } from './routes/map'
 import { Route as ListPlaceRouteImport } from './routes/list-place'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as PlacesPlaceIdRouteImport } from './routes/places.$placeId'
-import { Route as PlacesPlaceIdNavigateRouteImport } from './routes/places.$placeId.navigate'
+import { Route as PlacesPlaceIdNavigateRouteImport } from './routes/places.$placeId_.navigate'
 
 const TripsRoute = TripsRouteImport.update({
   id: '/trips',
@@ -66,9 +66,9 @@ const PlacesPlaceIdRoute = PlacesPlaceIdRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const PlacesPlaceIdNavigateRoute = PlacesPlaceIdNavigateRouteImport.update({
-  id: '/navigate',
-  path: '/navigate',
-  getParentRoute: () => PlacesPlaceIdRoute,
+  id: '/places/$placeId_/navigate',
+  path: '/places/$placeId/navigate',
+  getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -80,7 +80,7 @@ export interface FileRoutesByFullPath {
   '/settings': typeof SettingsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/trips': typeof TripsRoute
-  '/places/$placeId': typeof PlacesPlaceIdRouteWithChildren
+  '/places/$placeId': typeof PlacesPlaceIdRoute
   '/places/$placeId/navigate': typeof PlacesPlaceIdNavigateRoute
 }
 export interface FileRoutesByTo {
@@ -92,7 +92,7 @@ export interface FileRoutesByTo {
   '/settings': typeof SettingsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/trips': typeof TripsRoute
-  '/places/$placeId': typeof PlacesPlaceIdRouteWithChildren
+  '/places/$placeId': typeof PlacesPlaceIdRoute
   '/places/$placeId/navigate': typeof PlacesPlaceIdNavigateRoute
 }
 export interface FileRoutesById {
@@ -105,8 +105,8 @@ export interface FileRoutesById {
   '/settings': typeof SettingsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/trips': typeof TripsRoute
-  '/places/$placeId': typeof PlacesPlaceIdRouteWithChildren
-  '/places/$placeId/navigate': typeof PlacesPlaceIdNavigateRoute
+  '/places/$placeId': typeof PlacesPlaceIdRoute
+  '/places/$placeId_/navigate': typeof PlacesPlaceIdNavigateRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -144,7 +144,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/trips'
     | '/places/$placeId'
-    | '/places/$placeId/navigate'
+    | '/places/$placeId_/navigate'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -156,7 +156,8 @@ export interface RootRouteChildren {
   SettingsRoute: typeof SettingsRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TripsRoute: typeof TripsRoute
-  PlacesPlaceIdRoute: typeof PlacesPlaceIdRouteWithChildren
+  PlacesPlaceIdRoute: typeof PlacesPlaceIdRoute
+  PlacesPlaceIdNavigateRoute: typeof PlacesPlaceIdNavigateRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -224,27 +225,15 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PlacesPlaceIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/places/$placeId/navigate': {
-      id: '/places/$placeId/navigate'
-      path: '/navigate'
+    '/places/$placeId_/navigate': {
+      id: '/places/$placeId_/navigate'
+      path: '/places/$placeId/navigate'
       fullPath: '/places/$placeId/navigate'
       preLoaderRoute: typeof PlacesPlaceIdNavigateRouteImport
-      parentRoute: typeof PlacesPlaceIdRoute
+      parentRoute: typeof rootRouteImport
     }
   }
 }
-
-interface PlacesPlaceIdRouteChildren {
-  PlacesPlaceIdNavigateRoute: typeof PlacesPlaceIdNavigateRoute
-}
-
-const PlacesPlaceIdRouteChildren: PlacesPlaceIdRouteChildren = {
-  PlacesPlaceIdNavigateRoute: PlacesPlaceIdNavigateRoute,
-}
-
-const PlacesPlaceIdRouteWithChildren = PlacesPlaceIdRoute._addFileChildren(
-  PlacesPlaceIdRouteChildren,
-)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
@@ -255,8 +244,19 @@ const rootRouteChildren: RootRouteChildren = {
   SettingsRoute: SettingsRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TripsRoute: TripsRoute,
-  PlacesPlaceIdRoute: PlacesPlaceIdRouteWithChildren,
+  PlacesPlaceIdRoute: PlacesPlaceIdRoute,
+  PlacesPlaceIdNavigateRoute: PlacesPlaceIdNavigateRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
